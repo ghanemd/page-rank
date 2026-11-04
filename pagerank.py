@@ -5,6 +5,7 @@ import sys
 
 DAMPING = 0.85
 SAMPLES = 10000
+TOLERANCE = 0.001
 
 
 def main():
@@ -123,8 +124,28 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
 
+    old_rank = dict()
+    new_rank = dict()
+    for webpage in corpus:
+        old_rank[webpage] = 1 / len(corpus)
+        new_rank[webpage] = old_rank[webpage]
+    accurate = False
+
+    while not accurate:
+        accurate = True
+        for page in corpus:
+            page_rank = new_rank[page]
+            new_rank[page] = 0
+            for webpage in corpus:
+                if page in corpus[webpage]: 
+                    new_rank[page] += old_rank[webpage] / len(corpus[webpage])
+            new_rank[page] = new_rank[page] * damping_factor + (1 - damping_factor) / len(corpus) 
+            old_rank[page] = page_rank
+            if abs(old_rank[page] - new_rank[page]) > TOLERANCE:
+                accurate = False
+
+    return new_rank
 
 if __name__ == "__main__":
     main()
