@@ -103,13 +103,13 @@ def sample_pagerank(corpus, damping_factor, n):
     for _ in range(n-1):
         tm = transition_model(corpus, page, damping_factor)
         
-        page = random.choices(list(tm.keys()), weights=list(tm.values()), k=1)
+        page = random.choices(list(tm.keys()), weights=list(tm.values()), k=1)[0]
         count[page] += 1
 
 
     # Find the pageRank value for every webpage 
     for webpage in corpus:
-        rank[webpage] = count(webpage) / n
+        rank[webpage] = count[webpage] / n
 
     return rank
 
