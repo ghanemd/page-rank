@@ -96,14 +96,14 @@ def sample_pagerank(corpus, damping_factor, n):
         count[webpage] = 0
 
     # Generate the first sample by choosing a page randomly
-    page = random.choice(corpus.keys())
+    page = random.choice(list(corpus.keys()))
     count[page] += 1
 
-    # Generate the next sample, based on the previous's transition model
+    # Generate the next sample, based on the transition model of the previous one 
     for _ in range(n-1):
         tm = transition_model(corpus, page, damping_factor)
         
-        page = random.choices(tm.keys(), weights=tm.values(), k=1)
+        page = random.choices(list(tm.keys()), weights=list(tm.values()), k=1)
         count[page] += 1
 
 
